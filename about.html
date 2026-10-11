@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>コーダーの右腕 — 機能紹介</title>
+<meta name="description" content="Web制作のコーディングを支える右腕アプリ。カンプ画像やスクショに添えるAIへの指示プロンプトをフォームから作成、よく使うコードはスニペットとしてワンタップでコピー、納品前チェックリストで抜け漏れを防ぎます。">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:title" content="コーダーの右腕 — 機能紹介">
+<meta property="og:image" content="__APP_URL__/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --c1: #2980b9;
+    --c2: #21618c;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+    background: #1a1a1a;
+    color: #ececec;
+    line-height: 1.7;
+  }
+  a { color: inherit; text-decoration: none; }
+  .topbar {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 24px 20px 0;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #9a9a9a;
+    transition: color .15s ease;
+  }
+  .back-link:hover { color: #fff; }
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--c1);
+    margin: 24px 20px 0;
+    border-radius: 24px;
+    padding: 64px 24px;
+    text-align: center;
+  }
+  .hero::before, .hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: #ffffff;
+    opacity: 0.07;
+    filter: blur(10px);
+  }
+  .hero::before { width: 240px; height: 240px; top: -80px; left: -60px; }
+  .hero::after { width: 300px; height: 300px; bottom: -120px; right: -80px; }
+  .badge {
+    position: relative;
+    width: 128px;
+    height: 128px;
+    margin: 0 auto 24px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.94);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--c1);
+    box-shadow: 0 0 0 14px rgba(255,255,255,0.14);
+  }
+  .category-pill {
+    position: relative;
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    position: relative;
+    margin: 0 0 12px;
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: 800;
+    color: #fff;
+  }
+  .hero p.tagline {
+    position: relative;
+    margin: 0 auto 32px;
+    max-width: 520px;
+    font-size: 17px;
+    color: rgba(255,255,255,0.88);
+  }
+  .cta {
+    position: relative;
+    display: inline-block;
+    background: #fff;
+    color: #1a1a1a;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 14px 36px;
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    transition: transform .15s ease;
+  }
+  .cta:hover { transform: translateY(-2px); }
+
+  .features {
+    max-width: 880px;
+    margin: 56px auto 0;
+    padding: 0 20px;
+  }
+  .features h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 24px;
+    color: #fff;
+  }
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .feature-card {
+    background: #172430;
+    border: 1px solid #22384d;
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .feature-icon {
+    color: var(--c1);
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .feature-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: #fff;
+  }
+  .feature-desc {
+    font-size: 14px;
+    color: #b2c4d6;
+    margin: 0;
+  }
+
+  .steps {
+    max-width: 880px;
+    margin: 40px auto 0;
+    padding: 0 20px;
+  }
+  .steps h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 20px;
+    color: #fff;
+  }
+  .step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 14px 0;
+    border-top: 1px solid #1f3347;
+  }
+  .step:first-of-type { border-top: 0; }
+  .step-num {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--c1);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .step p { margin: 0; font-size: 14px; color: #d0dce8; }
+  .step strong { color: #fff; }
+  code {
+    background: rgba(255,255,255,0.1);
+    color: #ffe7a3;
+    border-radius: 4px;
+    padding: 0 4px;
+    font-size: 0.95em;
+  }
+
+  .note {
+    max-width: 880px;
+    margin: 24px auto 0;
+    padding: 0 20px;
+    font-size: 13px;
+    color: #8a9bad;
+  }
+
+  .footer-cta {
+    max-width: 880px;
+    margin: 56px auto 0;
+    padding: 0 20px 64px;
+    text-align: center;
+  }
+  .footer-cta .cta {
+    background: var(--c1);
+    color: #fff;
+    box-shadow: none;
+  }
+  .footer-links {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #8a9bad;
+  }
+  .footer-links a { color: #9a9a9a; }
+  .footer-links a:hover { color: #fff; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="back-link" href="https://apps.yuji-nakamura.com/">← アプリ一覧に戻る</a>
+  </div>
+
+  <section class="hero">
+    <span class="category-pill">仕事</span>
+    <div class="badge"><svg width="72" height="72" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 19 L10 32 L21 45"/><path d="M43 19 L54 32 L43 45"/><path d="M25 33 L30 38 L40 26"/></svg></div>
+    <h1>コーダーの右腕</h1>
+    <p class="tagline">指示プロンプト・スニペット・納品前チェックを、ひとつに。Web制作のコーディングを、着手から納品まで支える右腕アプリです。</p>
+    <a class="cta" href="__APP_URL__">アプリを使ってみる →</a>
+  </section>
+
+  <section class="features">
+    <h2>できること</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="10" width="44" height="44" rx="8"/><path d="M20 24 H44"/><path d="M20 32 H44"/><path d="M20 40 H34"/></svg></div>
+        <h3 class="feature-title">指示プロンプトをフォームで作成</h3>
+        <p class="feature-desc">「新規コーディング」「スクショで調整依頼」「機能の追加」「納品前レビュー」から選んで、幅や倍率、調整したい箇所を入れるだけ。AIにそのまま渡せる指示文ができあがります。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 18 L8 32 L22 46"/><path d="M42 18 L56 32 L42 46"/><path d="M36 14 L28 50"/></svg></div>
+        <h3 class="feature-title">ルールを毎回自動で入れる</h3>
+        <p class="feature-desc">セマンティック+BEM・SCSS・TypeScript・<code>npm run build</code> で <code>dist/</code> をFTP納品、というコーディングルールを指示文に自動で入れます。CLAUDE.md がある環境では短く参照だけにもできます。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="14" width="48" height="36" rx="6"/><path d="M8 40 L22 28 L32 36 L42 26 L56 38"/><circle cx="22" cy="24" r="3"/></svg></div>
+        <h3 class="feature-title">スクショでの調整依頼も整理</h3>
+        <p class="feature-desc">「箇所・現状・希望」を最大10件まで並べて入力。スクショに書いた番号とそろえておけば、伝わりやすい修正依頼になります。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 10 H42 L50 18 V54 H14 Z"/><path d="M22 28 H42"/><path d="M22 36 H42"/><path d="M22 44 H34"/></svg></div>
+        <h3 class="feature-title">テンプレートとして保存</h3>
+        <p class="feature-desc">いつもの幅・倍率・ブレークポイントなどを名前を付けて保存し、ワンタップで呼び出せます。入力中の内容はブラウザに下書きとして残ります。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="22" y="22" width="30" height="32" rx="5"/><path d="M42 22 V15 C42 12 40 10 37 10 H17 C14 10 12 12 12 15 V39 C12 42 14 44 17 44 H22"/></svg></div>
+        <h3 class="feature-title">スニペットをワンタップでコピー</h3>
+        <p class="feature-desc">ヘッダー・mixin・ハンバーガーメニューなど、案件ごとに書くコードを登録。コード部分をタップするだけでコピーできます。定番5つのサンプル付き。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="28" cy="28" r="16"/><path d="M40 40 L54 54"/></svg></div>
+        <h3 class="feature-title">言語別・キーワードで検索</h3>
+        <p class="feature-desc">HTML / SCSS / TypeScript などの言語で絞り込み、タイトル・メモ・コードの中身までまとめて検索。よく使うものほど上に並びます。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="12" y="10" width="40" height="46" rx="6"/><path d="M22 26 L27 31 L36 22"/><path d="M22 42 L27 47 L36 38"/><path d="M40 28 H44"/><path d="M40 44 H44"/></svg></div>
+        <h3 class="feature-title">納品前チェックリスト</h3>
+        <p class="feature-desc">案件を作ると、着手前のヒアリング項目（12項目）と納品前チェック（40項目）がまとめて用意されます。進み具合はバーと%で一目でわかります。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 10 H50 V54 H14 Z"/><path d="M22 22 H42"/><path d="M22 32 H42"/><path d="M22 42 H32"/><path d="M38 44 L42 48 L50 38"/></svg></div>
+        <h3 class="feature-title">案件ごとに項目を追加</h3>
+        <p class="feature-desc">その案件だけの確認項目を、好きなグループに追加できます。未チェックの項目だけをコピーして、AIに確認を頼むこともできます。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14 H54"/><path d="M10 34 H54"/><path d="M10 54 H54"/><rect x="14" y="20" width="8" height="14"/><rect x="26" y="22" width="8" height="12"/><rect x="40" y="40" width="8" height="14"/></svg></div>
+        <h3 class="feature-title">スマホとPCで同じデータ</h3>
+        <p class="feature-desc">Googleでログインすると、テンプレート・スニペット・案件はあなた専用の領域に保存され、スマホでもPCでも同じものを使えます。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="steps">
+    <h2>使い方</h2>
+    <div class="step">
+      <span class="step-num">1</span>
+      <p><strong>Googleでログイン</strong>：テンプレート・スニペット・案件はあなた専用の領域に保存されます。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">2</span>
+      <p><strong>指示プロンプトを作る</strong>：依頼の種類を選び、案件名・ページ名・幅などを入力。右（スマホでは下）にできあがった指示文が表示されます。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">3</span>
+      <p><strong>コピーしてAIに貼り付け</strong>：「指示文をコピー」を押し、Claude Code などの入力欄にカンプ画像やスクリーンショットと一緒に貼り付けて送信します。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">4</span>
+      <p><strong>よく使うコードはスニペットに</strong>：「定番を5つ入れてみる」で雰囲気をつかんでから、自分のコードを登録していくのがおすすめです。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">5</span>
+      <p><strong>納品前はチェックリストで確認</strong>：「納品チェック」で案件を作り、項目を1つずつチェック。すべて終わると「納品OK」になります。</p>
+    </div>
+  </section>
+
+  <p class="note">※ 入力中の指示プロンプトの下書きは、お使いの端末のブラウザにだけ保存されます。パスワードやFTPの接続情報などは、スニペットやチェック項目に保存しないでください。</p>
+
+  <section class="footer-cta">
+    <a class="cta" href="__APP_URL__">今すぐ使ってみる →</a>
+    <p class="footer-links"><a href="https://apps.yuji-nakamura.com/">他のアプリも見る</a></p>
+  </section>
+</body>
+</html>

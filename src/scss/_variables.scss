@@ -1,0 +1,52 @@
+// Colors — ベリーズホール（ブルー。OGPサムネイルと統一）
+$color-bg: #f1f5f9;
+$color-surface: #ffffff;
+$color-surface-2: #e8eff6;
+$color-surface-3: #d5e3ef;
+$color-primary: #2980b9;
+$color-primary-hover: #21618c;
+$color-primary-ink: #21618c; // 白地の上で文字として使う濃いブルー（コントラスト確保）
+$color-danger: #dc2626;
+$color-success: #15803d;
+$color-text: #1d1d1f;
+$color-text-muted: #5b6570;
+$color-border: #d6e0ea;
+
+// Code（スニペット・プレビュー表示用。primaryには追従させない）
+$color-code-bg: #1f2933;
+$color-code-text: #e4e9ee;
+$font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+// Language badges（言語の識別色。primaryには追従させない）
+$color-lang-html: #c2410c;
+$color-lang-scss: #be185d;
+$color-lang-ts: #1d4ed8;
+$color-lang-js: #a16207;
+$color-lang-other: #4b5563;
+
+// Typography
+$font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+$font-size-xs: 12px;
+$font-size-sm: 13px;
+$font-size-base: 15px;
+$font-size-lg: 18px;
+$font-size-xl: 22px;
+$font-size-2xl: 28px;
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-2xl: 48px;
+
+// Border radius
+$radius-sm: 6px;
+$radius-md: 10px;
+$radius-lg: 16px;
+
+// Breakpoints
+$bp-mobile: 480px;
+$bp-tablet: 768px;
+$bp-desktop: 1024px;

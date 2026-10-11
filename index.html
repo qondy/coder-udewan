@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2980b9">
+  <title>コーダーの右腕</title>
+  <meta name="description" content="Web制作のコーディングを支える右腕アプリ。カンプ画像やスクショに添えるAIへの指示プロンプトをフォームから作成、よく使うコードはスニペットとしてワンタップでコピー、納品前チェックリストで抜け漏れを防ぎます。">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <meta property="og:title" content="コーダーの右腕">
+  <meta property="og:description" content="指示プロンプト・スニペット・納品前チェックを、ひとつに。Web制作のコーディングを支える右腕アプリ。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="__APP_URL__/ogp.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="__APP_URL__/ogp.png">
+</head>
+<body>
+
+  <!-- ログイン画面 -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-card">
+      <span class="login-card__logo"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 19 L10 32 L21 45"/><path d="M43 19 L54 32 L43 45"/><path d="M25 33 L30 38 L40 26"/></svg></span>
+      <h1 class="login-card__title">コーダーの右腕</h1>
+      <p class="login-card__tagline">指示プロンプト・スニペット・納品前チェックを、ひとつに。<br>Web制作のコーディングを支える右腕。</p>
+      <button id="btn-google-login" class="google-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        Googleでログイン
+      </button>
+    </div>
+  </div>
+
+  <div id="app" class="hidden">
+    <header class="app-header">
+      <span class="app-header__brand"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-7px"><path d="M21 19 L10 32 L21 45"/><path d="M43 19 L54 32 L43 45"/><path d="M25 33 L30 38 L40 26"/></svg> コーダーの右腕</span>
+      <nav class="app-header__nav">
+        <a href="about.html" class="app-header__about-link">アプリについて</a>
+        <div id="user-info" class="app-header__user hidden">
+          <img id="user-avatar" class="app-header__avatar" src="" alt="" />
+          <span id="user-name" class="app-header__name"></span>
+          <button id="btn-logout" class="btn btn--ghost btn--sm">ログアウト</button>
+        </div>
+      </nav>
+    </header>
+
+    <nav class="tabs" role="tablist" aria-label="機能の切り替え">
+      <button type="button" class="tabs__btn" role="tab" data-tab="prompt" aria-controls="panel-prompt"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="10" y="10" width="44" height="44" rx="8"/><path d="M20 24 H44"/><path d="M20 32 H44"/><path d="M20 40 H34"/></svg><span>指示プロンプト</span></button>
+      <button type="button" class="tabs__btn" role="tab" data-tab="snippet" aria-controls="panel-snippet"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 18 L8 32 L22 46"/><path d="M42 18 L56 32 L42 46"/><path d="M36 14 L28 50"/></svg><span>スニペット</span></button>
+      <button type="button" class="tabs__btn" role="tab" data-tab="check" aria-controls="panel-check"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="12" y="10" width="40" height="46" rx="6"/><path d="M22 26 L27 31 L36 22"/><path d="M22 42 L27 47 L36 38"/><path d="M40 28 H44"/><path d="M40 44 H44"/></svg><span>納品チェック</span></button>
+    </nav>
+
+    <main class="app-main">
+
+      <!-- ===================== 指示プロンプト ===================== -->
+      <section id="panel-prompt" class="panel" role="tabpanel" aria-label="指示プロンプト">
+        <div class="panel__head">
+          <h2 class="panel__title">指示プロンプトを作る</h2>
+          <p class="panel__desc">カンプ画像やスクリーンショットと一緒に、AI（Claude Code など）へ貼り付ける指示文を作ります。</p>
+        </div>
+
+        <div class="preset-bar card-surface">
+          <div class="preset-bar__head">
+            <span class="preset-bar__label">保存したテンプレート</span>
+            <div class="preset-bar__actions">
+              <button type="button" id="btn-preset-save" class="btn btn--ghost btn--sm">いまの入力を保存</button>
+              <button type="button" id="btn-form-reset" class="btn btn--ghost btn--sm">入力をリセット</button>
+            </div>
+          </div>
+          <div class="preset-bar__list" id="preset-list"></div>
+        </div>
+
+        <div class="composer">
+          <form id="prompt-form" class="composer__form card-surface" novalidate>
+            <fieldset class="field">
+              <legend class="field__label">依頼の種類</legend>
+              <div class="kind-picker" id="kind-picker">
+                <label class="kind-picker__item"><input type="radio" name="kind" value="new"><span class="kind-picker__name">新規コーディング</span><span class="kind-picker__sub">カンプ画像から</span></label>
+                <label class="kind-picker__item"><input type="radio" name="kind" value="adjust"><span class="kind-picker__name">調整依頼</span><span class="kind-picker__sub">スクショを添えて</span></label>
+                <label class="kind-picker__item"><input type="radio" name="kind" value="feature"><span class="kind-picker__name">機能の追加</span><span class="kind-picker__sub">動き・JS</span></label>
+                <label class="kind-picker__item"><input type="radio" name="kind" value="review"><span class="kind-picker__name">納品前レビュー</span><span class="kind-picker__sub">チェックを依頼</span></label>
+              </div>
+            </fieldset>
+
+            <div class="field-row">
+              <div class="field">
+                <label class="field__label" for="f-project">案件名</label>
+                <input type="text" id="f-project" name="project" maxlength="80" placeholder="例：〇〇株式会社 採用LP" autocomplete="off">
+              </div>
+              <div class="field">
+                <label class="field__label" for="f-page">ページ名</label>
+                <input type="text" id="f-page" name="page" maxlength="80" placeholder="例：top" autocomplete="off">
+                <p class="field__note">英字で入れると <code>page-top</code> のクラス名にも使います</p>
+              </div>
+            </div>
+
+            <!-- 新規コーディング -->
+            <div class="kind-section" data-kind="new">
+              <fieldset class="field">
+                <legend class="field__label">添付する画像</legend>
+                <div class="choice-row">
+                  <label class="check"><input type="checkbox" name="hasPc"><span>PC版</span></label>
+                  <label class="check"><input type="checkbox" name="hasSp"><span>SP版</span></label>
+                </div>
+              </fieldset>
+              <fieldset class="field">
+                <legend class="field__label">画像の倍率</legend>
+                <div class="choice-row">
+                  <label class="check"><input type="radio" name="scale" value="2x"><span>2倍（@2x）</span></label>
+                  <label class="check"><input type="radio" name="scale" value="1x"><span>1倍</span></label>
+                </div>
+              </fieldset>
+              <div class="field-row field-row--3">
+                <div class="field">
+                  <label class="field__label" for="f-pc">PCの幅</label>
+                  <div class="unit-input"><input type="text" inputmode="numeric" id="f-pc" name="pcWidth" maxlength="5" autocomplete="off"><span>px</span></div>
+                </div>
+                <div class="field">
+                  <label class="field__label" for="f-sp">SPの幅</label>
+                  <div class="unit-input"><input type="text" inputmode="numeric" id="f-sp" name="spWidth" maxlength="5" autocomplete="off"><span>px</span></div>
+                </div>
+                <div class="field">
+                  <label class="field__label" for="f-bp">ブレークポイント</label>
+                  <div class="unit-input"><input type="text" inputmode="numeric" id="f-bp" name="breakpoint" maxlength="5" autocomplete="off"><span>px</span></div>
+                </div>
+              </div>
+              <div class="field">
+                <label class="field__label" for="f-font">フォント<span class="field__hint">任意</span></label>
+                <input type="text" id="f-font" name="font" maxlength="80" placeholder="例：Noto Sans JP（Google Fonts）、英字は Inter" autocomplete="off">
+              </div>
+              <fieldset class="field">
+                <legend class="field__label">サイトの形</legend>
+                <div class="choice-row">
+                  <label class="check"><input type="radio" name="siteType" value="static"><span>静的HTML（FTP納品）</span></label>
+                  <label class="check"><input type="radio" name="siteType" value="wp"><span>のちにWordPress化</span></label>
+                </div>
+              </fieldset>
+              <div class="field">
+                <label class="field__label" for="f-motion">動き・インタラクション<span class="field__hint">任意</span></label>
+                <textarea id="f-motion" name="motion" rows="3" maxlength="2000" placeholder="例：MVはスライダー（3枚・自動再生）。各セクションはスクロールでふわっと表示"></textarea>
+              </div>
+            </div>
+
+            <!-- 調整依頼 -->
+            <div class="kind-section" data-kind="adjust">
+              <fieldset class="field">
+                <legend class="field__label">対象の画面</legend>
+                <div class="choice-row">
+                  <label class="check"><input type="radio" name="device" value="both"><span>PC・SP</span></label>
+                  <label class="check"><input type="radio" name="device" value="pc"><span>PCのみ</span></label>
+                  <label class="check"><input type="radio" name="device" value="sp"><span>SPのみ</span></label>
+                </div>
+              </fieldset>
+              <div class="field">
+                <span class="field__label">調整内容<span class="field__hint">最大10件。スクショに番号を書いておくと伝わりやすくなります</span></span>
+                <ol class="adjust-list" id="adjust-list"></ol>
+                <button type="button" id="btn-adjust-add" class="btn btn--ghost btn--sm">＋ 調整内容を追加</button>
+              </div>
+            </div>
+
+            <!-- 機能の追加 -->
+            <div class="kind-section" data-kind="feature">
+              <div class="field-row">
+                <div class="field">
+                  <label class="field__label" for="f-feature-name">機能名</label>
+                  <input type="text" id="f-feature-name" name="featureName" maxlength="80" placeholder="例：FAQのアコーディオン" autocomplete="off">
+                </div>
+                <div class="field">
+                  <label class="field__label" for="f-feature-target">対象の要素</label>
+                  <input type="text" id="f-feature-target" name="featureTarget" maxlength="80" placeholder="例：.faq__item" autocomplete="off">
+                </div>
+              </div>
+              <div class="field">
+                <label class="field__label" for="f-feature-desc">どう動いてほしいか</label>
+                <textarea id="f-feature-desc" name="featureDesc" rows="4" maxlength="2000" placeholder="例：質問をタップすると回答が開く。開いているときは「＋」が「−」になる。複数同時に開いてよい"></textarea>
+              </div>
+            </div>
+
+            <!-- 納品前レビュー -->
+            <div class="kind-section" data-kind="review">
+              <fieldset class="field">
+                <legend class="field__label">チェックしてもらう対象</legend>
+                <div class="choice-row">
+                  <label class="check"><input type="radio" name="reviewTarget" value="src"><span>ソース（src/ とHTML）</span></label>
+                  <label class="check"><input type="radio" name="reviewTarget" value="dist"><span>ビルド後の dist/</span></label>
+                </div>
+              </fieldset>
+              <p class="field__note">「納品チェック」タブと同じ項目をチェックリストとして入れます。</p>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="f-note">補足<span class="field__hint">任意</span></label>
+              <textarea id="f-note" name="note" rows="3" maxlength="2000" placeholder="例：問い合わせフォームは見た目だけでOK"></textarea>
+            </div>
+
+            <fieldset class="field field--last">
+              <legend class="field__label">コーディングルールの入れ方</legend>
+              <div class="choice-col">
+                <label class="check"><input type="radio" name="ruleMode" value="ref"><span>短く参照だけ<small>（coding-template の CLAUDE.md がある環境で）</small></span></label>
+                <label class="check"><input type="radio" name="ruleMode" value="full"><span>ルールを全文で入れる<small>（ほかのAIや別の環境に渡すとき）</small></span></label>
+              </div>
+            </fieldset>
+          </form>
+
+          <aside class="composer__preview">
+            <div class="preview card-surface">
+              <div class="preview__head">
+                <span class="preview__label">できあがった指示文</span>
+                <span class="preview__count" id="prompt-count"></span>
+              </div>
+              <pre class="preview__body" id="prompt-preview"></pre>
+              <button type="button" id="btn-prompt-copy" class="btn btn--primary btn--block btn--lg">指示文をコピー</button>
+              <p class="preview__tip">コピーしたら、AIの入力欄に画像と一緒に貼り付けてください。</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ===================== スニペット ===================== -->
+      <section id="panel-snippet" class="panel hidden" role="tabpanel" aria-label="スニペット">
+        <div class="panel__head">
+          <h2 class="panel__title">スニペット</h2>
+          <p class="panel__desc">よく使うコードを登録しておき、ワンタップでコピーできます。</p>
+        </div>
+
+        <div class="toolbar card-surface">
+          <div class="toolbar__row">
+            <label class="search">
+              <svg class="search__icon" width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="28" cy="28" r="16"/><path d="M40 40 L54 54"/></svg>
+              <input type="search" id="snippet-search" class="search__input" placeholder="タイトル・メモ・コードを検索" autocomplete="off" aria-label="スニペットを検索">
+            </label>
+            <button type="button" id="btn-snippet-new" class="btn btn--primary toolbar__new"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" aria-hidden="true"><path d="M32 12 V52"/><path d="M12 32 H52"/></svg><span>新しいスニペット</span></button>
+          </div>
+          <div class="chip-row" id="lang-filter" role="group" aria-label="言語で絞り込み"></div>
+        </div>
+
+        <div id="snippet-loading" class="empty-state">読み込み中…</div>
+        <ul id="snippet-list" class="snippet-list"></ul>
+
+        <div id="snippet-empty-first" class="empty-state card-surface hidden">
+          <p class="empty-state__title">まだスニペットがありません</p>
+          <p>ヘッダーやmixinなど、案件ごとに書いているコードを登録しておくと<br>次からはワンタップでコピーできます。</p>
+          <div class="empty-state__actions">
+            <button type="button" id="btn-snippet-empty-new" class="btn btn--primary">最初のスニペットを登録</button>
+            <button type="button" id="btn-snippet-samples" class="btn btn--ghost">定番を5つ入れてみる</button>
+          </div>
+        </div>
+        <div id="snippet-empty-match" class="empty-state card-surface hidden">
+          <p>条件に合うスニペットがありません。</p>
+          <div class="empty-state__actions">
+            <button type="button" id="btn-snippet-clear" class="btn btn--ghost btn--sm">絞り込みを解除する</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== 納品チェック ===================== -->
+      <section id="panel-check" class="panel hidden" role="tabpanel" aria-label="納品チェック">
+        <!-- 案件一覧 -->
+        <div id="check-list-view">
+          <div class="panel__head panel__head--row">
+            <div>
+              <h2 class="panel__title">納品チェック</h2>
+              <p class="panel__desc">案件ごとにチェックリストを作り、抜け漏れなく納品します。</p>
+            </div>
+            <button type="button" id="btn-project-new" class="btn btn--primary"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" aria-hidden="true"><path d="M32 12 V52"/><path d="M12 32 H52"/></svg><span>新しい案件</span></button>
+          </div>
+          <div id="project-loading" class="empty-state">読み込み中…</div>
+          <ul id="project-list" class="project-list"></ul>
+          <div id="project-empty" class="empty-state card-surface hidden">
+            <p class="empty-state__title">まだ案件がありません</p>
+            <p>案件を作ると、着手前のヒアリング項目と納品前チェックリストが<br>まとめて用意されます。</p>
+            <div class="empty-state__actions">
+              <button type="button" id="btn-project-empty-new" class="btn btn--primary">最初の案件を作る</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 案件の詳細 -->
+        <div id="check-detail-view" class="hidden">
+          <button type="button" id="btn-project-back" class="back-btn"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M38 14 L20 32 L38 50"/></svg>案件一覧へ</button>
+          <div class="project-head card-surface">
+            <div class="project-head__top">
+              <div>
+                <h2 class="project-head__name" id="project-name"></h2>
+                <p class="project-head__due" id="project-due"></p>
+              </div>
+              <button type="button" id="btn-project-edit" class="btn btn--ghost btn--sm">名前・納期を編集</button>
+            </div>
+            <div class="progress" aria-hidden="true"><div class="progress__bar" id="project-progress-bar"></div></div>
+            <p class="project-head__summary" id="project-summary"></p>
+            <div class="project-head__actions">
+              <button type="button" id="btn-copy-unchecked" class="btn btn--ghost btn--sm">未チェックの項目をコピー</button>
+              <button type="button" id="btn-hide-done" class="btn btn--ghost btn--sm" aria-pressed="false">チェック済みを隠す</button>
+            </div>
+          </div>
+
+          <form id="add-item-form" class="add-item card-surface" novalidate>
+            <label class="add-item__label" for="add-item-text">項目を追加</label>
+            <div class="add-item__row">
+              <select id="add-item-group" class="select add-item__group" aria-label="追加先のグループ"></select>
+              <input type="text" id="add-item-text" class="add-item__text" maxlength="120" placeholder="例：お問い合わせフォームの送信テスト" autocomplete="off">
+              <button type="submit" class="btn btn--primary">追加</button>
+            </div>
+          </form>
+
+          <div id="check-groups" class="check-groups"></div>
+
+          <div class="danger-zone">
+            <button type="button" id="btn-check-reset" class="btn btn--ghost btn--sm">すべて未チェックに戻す</button>
+            <button type="button" id="btn-project-delete" class="btn btn--ghost btn--sm is-danger">この案件を削除</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>© 2026 Yuji Nakamura. All rights reserved.</p>
+      <p><a href="https://apps.yuji-nakamura.com/" target="_blank" rel="noopener">他のアプリを見る →</a></p>
+    </footer>
+
+    <a href="about.html" class="about-fab"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="32" cy="32" r="20"/><circle cx="32" cy="22" r="1.5" fill="currentColor" stroke="none"/><path d="M32 30 V44"/></svg><span class="about-fab__label">アプリについて</span></a>
+    <button id="feedback-btn" class="feedback-btn" aria-label="ご意見・ご要望"><svg width="22" height="22" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-6px"><rect x="8" y="14" width="48" height="30" rx="8"/><path d="M22 44 L14 54 V44"/></svg> <span class="feedback-btn__label">ご意見</span></button>
+  </div>
+
+  <!-- テンプレート保存モーダル -->
+  <div id="preset-overlay" class="dialog-overlay">
+    <form id="preset-form" class="modal" novalidate>
+      <div class="modal__head">
+        <div class="modal__title">テンプレートとして保存</div>
+        <button type="button" class="modal__close" data-close aria-label="閉じる">&times;</button>
+      </div>
+      <p class="modal__lead">いまの入力内容（依頼の種類・幅・ルールの入れ方など）に名前を付けて保存します。</p>
+      <div class="field field--compact">
+        <label class="field__label" for="input-preset-name">テンプレート名</label>
+        <input type="text" id="input-preset-name" maxlength="40" placeholder="例：いつものLP（2倍・768px）" autocomplete="off">
+      </div>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--ghost" data-close>キャンセル</button>
+        <button type="submit" id="btn-preset-submit" class="btn btn--primary">保存する</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- スニペット編集モーダル -->
+  <div id="snippet-overlay" class="dialog-overlay">
+    <form id="snippet-form" class="modal modal--wide" novalidate>
+      <div class="modal__head">
+        <div class="modal__title" id="snippet-modal-title">新しいスニペット</div>
+        <button type="button" class="modal__close" data-close aria-label="閉じる">&times;</button>
+      </div>
+      <div class="field-row field-row--title">
+        <div class="field">
+          <label class="field__label" for="input-snippet-title">タイトル<span class="field__req">必須</span></label>
+          <input type="text" id="input-snippet-title" maxlength="80" placeholder="例：ヘッダー（ハンバーガー付き）" autocomplete="off">
+        </div>
+        <div class="field">
+          <label class="field__label" for="input-snippet-lang">言語</label>
+          <select id="input-snippet-lang" class="select">
+            <option value="html">HTML</option>
+            <option value="scss">SCSS</option>
+            <option value="ts">TypeScript</option>
+            <option value="js">JavaScript</option>
+            <option value="other">その他</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label" for="input-snippet-code">コード<span class="field__req">必須</span></label>
+        <textarea id="input-snippet-code" class="code-input" rows="12" maxlength="20000" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="ここにコードを貼り付け"></textarea>
+        <p class="field__count" id="snippet-code-count">0 / 20000</p>
+      </div>
+      <div class="field">
+        <label class="field__label" for="input-snippet-memo">メモ<span class="field__hint">任意・使い方など</span></label>
+        <input type="text" id="input-snippet-memo" maxlength="300" placeholder="例：main.ts から initHamburger() を呼ぶ" autocomplete="off">
+      </div>
+      <div class="modal__actions modal__actions--split">
+        <div class="modal__actions-left">
+          <button type="button" id="btn-snippet-delete" class="btn btn--ghost is-danger hidden">削除</button>
+        </div>
+        <div class="modal__actions-right">
+          <button type="button" class="btn btn--ghost" data-close>キャンセル</button>
+          <button type="submit" id="btn-snippet-save" class="btn btn--primary">保存する</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- 案件の作成・編集モーダル -->
+  <div id="project-overlay" class="dialog-overlay">
+    <form id="project-form" class="modal" novalidate>
+      <div class="modal__head">
+        <div class="modal__title" id="project-modal-title">新しい案件</div>
+        <button type="button" class="modal__close" data-close aria-label="閉じる">&times;</button>
+      </div>
+      <div class="field">
+        <label class="field__label" for="input-project-name">案件名<span class="field__req">必須</span></label>
+        <input type="text" id="input-project-name" maxlength="60" placeholder="例：〇〇株式会社 採用LP" autocomplete="off">
+      </div>
+      <div class="field">
+        <label class="field__label" for="input-project-due">納期<span class="field__hint">任意</span></label>
+        <input type="date" id="input-project-due" class="date-input">
+      </div>
+      <fieldset class="field field--compact" id="project-lists-field">
+        <legend class="field__label">用意するチェックリスト</legend>
+        <div class="choice-col">
+          <label class="check"><input type="checkbox" id="input-list-start" checked><span>着手前のヒアリング項目<small>（12項目）</small></span></label>
+          <label class="check"><input type="checkbox" id="input-list-delivery" checked><span>納品前チェックリスト<small>（40項目）</small></span></label>
+        </div>
+      </fieldset>
+      <div class="modal__actions">
+        <button type="button" class="btn btn--ghost" data-close>キャンセル</button>
+        <button type="submit" id="btn-project-save" class="btn btn--primary">作成する</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 確認ダイアログ（カスタムUI） -->
+  <div id="confirm-dialog-overlay" class="dialog-overlay">
+    <div class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="confirm-dialog-title">
+      <div class="dialog__title" id="confirm-dialog-title">削除しますか？</div>
+      <div class="dialog__text" id="confirm-dialog-text">削除すると元に戻せません。</div>
+      <div class="dialog__actions">
+        <button id="btn-confirm-cancel" class="btn btn--ghost">キャンセル</button>
+        <button id="btn-confirm-ok" class="btn btn--danger">削除する</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 要望送信モーダル -->
+  <div id="feedback-modal-overlay" class="dialog-overlay">
+    <div class="modal">
+      <div class="modal__head">
+        <div class="modal__title">ご意見・ご要望</div>
+        <button type="button" class="modal__close" data-close aria-label="閉じる">&times;</button>
+      </div>
+      <textarea id="input-feedback-message" rows="5" maxlength="2000" placeholder="ご意見・ご要望・バグ報告など、なんでもどうぞ"></textarea>
+      <div class="modal__actions">
+        <button id="btn-feedback-send" class="btn btn--primary">送信する</button>
+      </div>
+      <p class="modal__note">送信内容は開発者に届きます。個人情報は入力しないでください。</p>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
