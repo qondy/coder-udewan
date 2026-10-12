@@ -47,6 +47,23 @@
       font-size: $font-size-xs;
     }
   }
+
+  // 4タブを狭い画面に収めるため、長いラベルだけ短い表記に切り替える
+  &__label-sm {
+    display: none;
+  }
+
+  @media (max-width: $bp-mobile) {
+    padding: $spacing-xs $spacing-sm 0;
+
+    &__label {
+      display: none;
+    }
+
+    &__label-sm {
+      display: inline;
+    }
+  }
 }
 
 // ===== Panel =====
@@ -399,6 +416,7 @@
   &__sub {
     font-size: $font-size-xs;
     color: $color-text-muted;
+    word-break: break-all;
   }
 }
 
@@ -517,6 +535,55 @@
     font-size: $font-size-xs;
     text-align: center;
     color: $color-text-muted;
+  }
+
+  &__actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: $spacing-sm;
+  }
+}
+
+.setup-steps {
+  margin-top: $spacing-lg;
+  padding-top: $spacing-md;
+  border-top: 1px solid $color-border;
+
+  &__title {
+    margin-bottom: $spacing-sm;
+    font-size: $font-size-sm;
+    font-weight: 700;
+  }
+
+  &__list {
+    display: grid;
+    gap: $spacing-sm;
+    counter-reset: step;
+  }
+
+  &__item {
+    position: relative;
+    padding-left: 32px;
+    font-size: $font-size-sm;
+    line-height: 1.6;
+    counter-increment: step;
+
+    &::before {
+      content: counter(step);
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      font-size: $font-size-xs;
+      font-weight: 800;
+      color: #fff;
+      background: $color-primary;
+      border-radius: 50%;
+    }
   }
 }
 

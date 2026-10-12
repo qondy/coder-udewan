@@ -3,12 +3,13 @@ import { cancelConfirm, initConfirmDialog, isConfirmOpen } from './dialog';
 import { submitFeedback } from './feedback';
 import { initCheckTab, setCheckUser } from './tab-check';
 import { initPromptTab, setPromptUser } from './tab-prompt';
+import { initRulesTab } from './tab-rules';
 import { canCloseSnippetEditor, initSnippetTab, setSnippetUser } from './tab-snippet';
 import { TabKey } from './types';
 import { closeOverlay, openOverlay, showToast } from './ui';
 
 const TAB_KEY = 'coder-udewan:tab';
-const TABS: TabKey[] = ['prompt', 'snippet', 'check'];
+const TABS: TabKey[] = ['prompt', 'rules', 'snippet', 'check'];
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
 
@@ -166,6 +167,7 @@ initConfirmDialog();
 initOverlays();
 initTabs();
 initPromptTab();
+initRulesTab();
 initSnippetTab();
 initCheckTab();
 initFeedback();

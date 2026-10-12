@@ -249,6 +249,11 @@
         <p class="feature-desc">セマンティック+BEM・SCSS・TypeScript・<code>npm run build</code> で <code>dist/</code> をFTP納品、というコーディングルールを指示文に自動で入れます。デフォルトは「セマンティック+BEM ／ SCSS、TS ／ npm run build→dist→FTP等」の3行で、命名規則や画像の扱いまで書いた詳しい版にも切り替えられます。</p>
       </div>
       <div class="feature-card">
+        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10 H40 L50 20 V54 H16 Z"/><path d="M40 10 V20 H50"/><path d="M24 30 H42"/><path d="M24 38 H42"/><path d="M24 46 H34"/></svg></div>
+        <h3 class="feature-title">「コーディングして」だけで伝わる</h3>
+        <p class="feature-desc">「ルール設定」タブで、Claude・Claude Code・GitHub Copilot・Cursor・ChatGPT 向けのルール設定を作れます。一度入れておけば、あとはカンプ画像を貼って「コーディングして」と送るだけで、毎回ルールどおりに実装されます。</p>
+      </div>
+      <div class="feature-card">
         <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="14" width="48" height="36" rx="6"/><path d="M8 40 L22 28 L32 36 L42 26 L56 38"/><circle cx="22" cy="24" r="3"/></svg></div>
         <h3 class="feature-title">スクショでの調整依頼も整理</h3>
         <p class="feature-desc">「箇所・現状・希望」を最大10件まで並べて入力。スクショに書いた番号とそろえておけば、伝わりやすい修正依頼になります。</p>
@@ -294,18 +299,22 @@
     </div>
     <div class="step">
       <span class="step-num">2</span>
-      <p><strong>指示プロンプトを作る</strong>：依頼の種類を選び、案件名・ページ名・幅などを入力。右（スマホでは下）にできあがった指示文が表示されます。</p>
+      <p><strong>AIにルールを覚えさせる（最初に1回）</strong>：「ルール設定」タブで使うAIを選び、コピーまたはファイル保存して設定します。以降はカンプ画像を貼って「コーディングして」と送るだけで、指示文を作らなくてもルールどおりに実装されます。</p>
     </div>
     <div class="step">
       <span class="step-num">3</span>
-      <p><strong>コピーしてAIに貼り付け</strong>：「指示文をコピー」を押し、Claude Code などの入力欄にカンプ画像やスクリーンショットと一緒に貼り付けて送信します。</p>
+      <p><strong>指示プロンプトを作る</strong>：依頼の種類を選び、案件名・ページ名・幅などを入力。右（スマホでは下）にできあがった指示文が表示されます。</p>
     </div>
     <div class="step">
       <span class="step-num">4</span>
-      <p><strong>よく使うコードはスニペットに</strong>：「定番を5つ入れてみる」で雰囲気をつかんでから、自分のコードを登録していくのがおすすめです。</p>
+      <p><strong>コピーしてAIに貼り付け</strong>：「指示文をコピー」を押し、Claude Code などの入力欄にカンプ画像やスクリーンショットと一緒に貼り付けて送信します。</p>
     </div>
     <div class="step">
       <span class="step-num">5</span>
+      <p><strong>よく使うコードはスニペットに</strong>：「定番を5つ入れてみる」で雰囲気をつかんでから、自分のコードを登録していくのがおすすめです。</p>
+    </div>
+    <div class="step">
+      <span class="step-num">6</span>
       <p><strong>納品前はチェックリストで確認</strong>：「納品チェック」で案件を作り、項目を1つずつチェック。すべて終わると「納品OK」になります。</p>
     </div>
   </section>

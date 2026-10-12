@@ -56,7 +56,8 @@
     </header>
 
     <nav class="tabs" role="tablist" aria-label="機能の切り替え">
-      <button type="button" class="tabs__btn" role="tab" data-tab="prompt" aria-controls="panel-prompt"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="10" y="10" width="44" height="44" rx="8"/><path d="M20 24 H44"/><path d="M20 32 H44"/><path d="M20 40 H34"/></svg><span>指示プロンプト</span></button>
+      <button type="button" class="tabs__btn" role="tab" data-tab="prompt" aria-controls="panel-prompt"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="10" y="10" width="44" height="44" rx="8"/><path d="M20 24 H44"/><path d="M20 32 H44"/><path d="M20 40 H34"/></svg><span class="tabs__label">指示プロンプト</span><span class="tabs__label-sm">指示文</span></button>
+      <button type="button" class="tabs__btn" role="tab" data-tab="rules" aria-controls="panel-rules"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10 H40 L50 20 V54 H16 Z"/><path d="M40 10 V20 H50"/><path d="M24 30 H42"/><path d="M24 38 H42"/><path d="M24 46 H34"/></svg><span>ルール設定</span></button>
       <button type="button" class="tabs__btn" role="tab" data-tab="snippet" aria-controls="panel-snippet"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 18 L8 32 L22 46"/><path d="M42 18 L56 32 L42 46"/><path d="M36 14 L28 50"/></svg><span>スニペット</span></button>
       <button type="button" class="tabs__btn" role="tab" data-tab="check" aria-controls="panel-check"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="12" y="10" width="40" height="46" rx="6"/><path d="M22 26 L27 31 L36 22"/><path d="M22 42 L27 47 L36 38"/><path d="M40 28 H44"/><path d="M40 44 H44"/></svg><span>納品チェック</span></button>
     </nav>
@@ -222,6 +223,76 @@
               <pre class="preview__body" id="prompt-preview"></pre>
               <button type="button" id="btn-prompt-copy" class="btn btn--primary btn--block btn--lg">指示文をコピー</button>
               <p class="preview__tip">コピーしたら、AIの入力欄に画像と一緒に貼り付けてください。</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ===================== ルール設定 ===================== -->
+      <section id="panel-rules" class="panel hidden" role="tabpanel" aria-label="ルール設定">
+        <div class="panel__head">
+          <h2 class="panel__title">AIにルールを覚えさせる</h2>
+          <p class="panel__desc">お使いのAIに一度だけこの設定を入れておくと、以降はカンプ画像を貼って「コーディングして」と送るだけで、毎回このルールで実装されます。</p>
+        </div>
+
+        <div class="composer">
+          <form id="rulefile-form" class="composer__form card-surface" novalidate>
+            <fieldset class="field">
+              <legend class="field__label">使うAI</legend>
+              <div class="kind-picker kind-picker--5">
+                <label class="kind-picker__item"><input type="radio" name="target" value="claude"><span class="kind-picker__name">Claude</span><span class="kind-picker__sub">プロジェクトの指示</span></label>
+                <label class="kind-picker__item"><input type="radio" name="target" value="claude-code"><span class="kind-picker__name">Claude Code</span><span class="kind-picker__sub">CLAUDE.md</span></label>
+                <label class="kind-picker__item"><input type="radio" name="target" value="copilot"><span class="kind-picker__name">GitHub Copilot</span><span class="kind-picker__sub">copilot-instructions.md</span></label>
+                <label class="kind-picker__item"><input type="radio" name="target" value="cursor"><span class="kind-picker__name">Cursor</span><span class="kind-picker__sub">.cursor/rules</span></label>
+                <label class="kind-picker__item"><input type="radio" name="target" value="chatgpt"><span class="kind-picker__name">ChatGPT</span><span class="kind-picker__sub">プロジェクトの指示</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="field">
+              <legend class="field__label">コーディングルール</legend>
+              <div class="choice-col">
+                <label class="check"><input type="radio" name="ruleMode" value="basic"><span>基本ルール（おすすめ）<small>セマンティック+BEM ／ SCSS、TS ／ npm run build→dist→FTP等</small></span></label>
+                <label class="check"><input type="radio" name="ruleMode" value="full"><span>詳しいルールまで入れる<small>BEMの命名・画像の書き出し・hoverの扱いなどもすべて書く</small></span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="field">
+              <legend class="field__label">カンプ画像の倍率</legend>
+              <div class="choice-row">
+                <label class="check"><input type="radio" name="scale" value="2x"><span>2倍（@2x）</span></label>
+                <label class="check"><input type="radio" name="scale" value="1x"><span>1倍</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="field">
+              <legend class="field__label">AIへのお願い</legend>
+              <div class="choice-col">
+                <label class="check"><input type="checkbox" name="askFirst"><span>わからない点は、コードを書く前にまとめて質問してもらう</span></label>
+                <label class="check"><input type="checkbox" name="noInvent"><span>画像の文章はそのまま転記し、読めない箇所は ＊＊＊ にしてもらう</span></label>
+                <label class="check"><input type="checkbox" name="adjustFlow"><span>スクショでの調整依頼は、指定箇所だけ最小限で直してもらう</span></label>
+              </div>
+            </fieldset>
+
+            <div class="field field--last">
+              <label class="field__label" for="f-rule-extra">追加のルール<span class="field__hint">任意</span></label>
+              <textarea id="f-rule-extra" name="extra" rows="3" maxlength="2000" placeholder="例：ブレークポイントは768px。フォントは Noto Sans JP"></textarea>
+            </div>
+          </form>
+
+          <aside class="composer__preview">
+            <div class="preview card-surface">
+              <div class="preview__head">
+                <span class="preview__label" id="rulefile-preview-label"></span>
+              </div>
+              <pre class="preview__body" id="rulefile-preview"></pre>
+              <div class="preview__actions">
+                <button type="button" id="btn-rulefile-copy" class="btn btn--primary btn--lg">コピー</button>
+                <button type="button" id="btn-rulefile-download" class="btn btn--ghost btn--lg">ファイルを保存</button>
+              </div>
+              <div class="setup-steps">
+                <p class="setup-steps__title" id="rulefile-steps-title"></p>
+                <ol class="setup-steps__list" id="rulefile-steps"></ol>
+              </div>
             </div>
           </aside>
         </div>

@@ -85,4 +85,4 @@ export interface Project {
   updatedAt: number;
 }
 
-export type TabKey = 'prompt' | 'snippet' | 'check';
+export type TabKey = 'prompt' | 'rules' | 'snippet' | 'check';
