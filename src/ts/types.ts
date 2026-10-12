@@ -85,4 +85,23 @@ export interface Project {
   updatedAt: number;
 }
 
-export type TabKey = 'prompt' | 'rules' | 'snippet' | 'check';
+export type TabKey = 'prompt' | 'rules' | 'snippet' | 'check' | 'memo';
+
+// ============================================================
+// メモ
+// ============================================================
+export interface MemoData {
+  title: string;
+  body: string;
+  /** カテゴリー（'' は未分類） */
+  category: string;
+  /** 紐付けた案件のID（'' は紐付けなし） */
+  projectId: string;
+  pinned: boolean;
+}
+
+export interface Memo extends MemoData {
+  id: string;
+  createdAt: number;
+  updatedAt: number;
+}

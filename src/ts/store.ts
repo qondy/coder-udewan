@@ -4,7 +4,7 @@ import {
 import { db } from './firebase';
 import { normalizeForm } from './prompt';
 import {
-  CheckItem, Preset, Project, PromptForm, Snippet, SnippetData, SnippetLang,
+  CheckItem, Memo, MemoData, Preset, Project, PromptForm, Snippet, SnippetData, SnippetLang,
 } from './types';
 
 export const MAX_PRESET_NAME = 40;
@@ -15,6 +15,9 @@ export const MAX_SNIPPET_MEMO = 300;
 export const MAX_PROJECT_NAME = 60;
 export const MAX_CHECK_TEXT = 120;
 export const MAX_CHECK_ITEMS = 200;
+export const MAX_MEMO_TITLE = 80;
+export const MAX_MEMO_BODY = 10000;
+export const MAX_MEMO_CATEGORY = 20;
 export const SNIPPET_LANGS: SnippetLang[] = ['html', 'scss', 'ts', 'js', 'other'];
 
 const str = (v: unknown, max: number): string => (typeof v === 'string' ? v.slice(0, max) : '');
@@ -192,4 +195,60 @@ export function saveProjectItems(uid: string, id: string, items: CheckItem[]): P
 
 export function deleteProject(uid: string, id: string): Promise<void> {
   return deleteDoc(doc(db, 'users', uid, 'projects', id));
+}
+
+// ============================================================
+// Memos
+// ============================================================
+const memosCol = (uid: string) => collection(db, 'users', uid, 'memos');
+
+function sanitizeMemo(data: MemoData): MemoData {
+  return {
+    title: data.title.trim().slice(0, MAX_MEMO_TITLE),
+    body: data.body.slice(0, MAX_MEMO_BODY),
+    category: data.category.trim().slice(0, MAX_MEMO_CATEGORY),
+    projectId: data.projectId.slice(0, 40),
+    pinned: data.pinned === true,
+  };
+}
+
+export function subscribeMemos(uid: string, onData: (list: Memo[]) => void, onError: OnError): Unsub {
+  return onSnapshot(memosCol(uid), (snap) => {
+    const list: Memo[] = [];
+    snap.forEach((d) => {
+      const data = d.data();
+      const createdAt = msOrNull(data.createdAt);
+      if (!createdAt || typeof data.body !== 'string') return;
+      list.push({
+        id: d.id,
+        ...sanitizeMemo({
+          title: str(data.title, MAX_MEMO_TITLE),
+          body: data.body,
+          category: str(data.category, MAX_MEMO_CATEGORY),
+          projectId: str(data.projectId, 40),
+          pinned: data.pinned === true,
+        }),
+        createdAt,
+        updatedAt: msOrNull(data.updatedAt) ?? createdAt,
+      });
+    });
+    onData(list);
+  }, onError);
+}
+
+export async function createMemo(uid: string, data: MemoData): Promise<void> {
+  const now = Date.now();
+  await addDoc(memosCol(uid), { ...sanitizeMemo(data), createdAt: now, updatedAt: now });
+}
+
+export function updateMemo(uid: string, id: string, data: MemoData): Promise<void> {
+  return updateDoc(doc(db, 'users', uid, 'memos', id), { ...sanitizeMemo(data), updatedAt: Date.now() });
+}
+
+export function setMemoPinned(uid: string, id: string, pinned: boolean): Promise<void> {
+  return updateDoc(doc(db, 'users', uid, 'memos', id), { pinned });
+}
+
+export function deleteMemo(uid: string, id: string): Promise<void> {
+  return deleteDoc(doc(db, 'users', uid, 'memos', id));
 }

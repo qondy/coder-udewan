@@ -57,9 +57,10 @@
 
     <nav class="tabs" role="tablist" aria-label="機能の切り替え">
       <button type="button" class="tabs__btn" role="tab" data-tab="prompt" aria-controls="panel-prompt"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="10" y="10" width="44" height="44" rx="8"/><path d="M20 24 H44"/><path d="M20 32 H44"/><path d="M20 40 H34"/></svg><span class="tabs__label">指示プロンプト</span><span class="tabs__label-sm">指示文</span></button>
-      <button type="button" class="tabs__btn" role="tab" data-tab="rules" aria-controls="panel-rules"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10 H40 L50 20 V54 H16 Z"/><path d="M40 10 V20 H50"/><path d="M24 30 H42"/><path d="M24 38 H42"/><path d="M24 46 H34"/></svg><span>ルール設定</span></button>
+      <button type="button" class="tabs__btn" role="tab" data-tab="rules" aria-controls="panel-rules"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10 H40 L50 20 V54 H16 Z"/><path d="M40 10 V20 H50"/><path d="M24 30 H42"/><path d="M24 38 H42"/><path d="M24 46 H34"/></svg><span class="tabs__label">ルール設定</span><span class="tabs__label-sm">ルール</span></button>
       <button type="button" class="tabs__btn" role="tab" data-tab="snippet" aria-controls="panel-snippet"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 18 L8 32 L22 46"/><path d="M42 18 L56 32 L42 46"/><path d="M36 14 L28 50"/></svg><span>スニペット</span></button>
-      <button type="button" class="tabs__btn" role="tab" data-tab="check" aria-controls="panel-check"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="12" y="10" width="40" height="46" rx="6"/><path d="M22 26 L27 31 L36 22"/><path d="M22 42 L27 47 L36 38"/><path d="M40 28 H44"/><path d="M40 44 H44"/></svg><span>納品チェック</span></button>
+      <button type="button" class="tabs__btn" role="tab" data-tab="check" aria-controls="panel-check"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="12" y="10" width="40" height="46" rx="6"/><path d="M22 26 L27 31 L36 22"/><path d="M22 42 L27 47 L36 38"/><path d="M40 28 H44"/><path d="M40 44 H44"/></svg><span class="tabs__label">納品チェック</span><span class="tabs__label-sm">チェック</span></button>
+      <button type="button" class="tabs__btn" role="tab" data-tab="memo" aria-controls="panel-memo"><svg width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 10 H52 V40 L38 54 H12 Z"/><path d="M38 54 V40 H52"/><path d="M20 22 H44"/><path d="M20 30 H36"/></svg><span>メモ</span></button>
     </nav>
 
     <main class="app-main">
@@ -373,6 +374,7 @@
             <div class="project-head__actions">
               <button type="button" id="btn-copy-unchecked" class="btn btn--ghost btn--sm">未チェックの項目をコピー</button>
               <button type="button" id="btn-hide-done" class="btn btn--ghost btn--sm" aria-pressed="false">チェック済みを隠す</button>
+              <button type="button" id="btn-project-memos" class="btn btn--ghost btn--sm">この案件のメモ</button>
             </div>
           </div>
 
@@ -390,6 +392,45 @@
           <div class="danger-zone">
             <button type="button" id="btn-check-reset" class="btn btn--ghost btn--sm">すべて未チェックに戻す</button>
             <button type="button" id="btn-project-delete" class="btn btn--ghost btn--sm is-danger">この案件を削除</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== メモ ===================== -->
+      <section id="panel-memo" class="panel hidden" role="tabpanel" aria-label="メモ">
+        <div class="panel__head">
+          <h2 class="panel__title">メモ</h2>
+          <p class="panel__desc">打ち合わせの内容や修正依頼、作業ログなどを案件ごとに残しておけます。</p>
+        </div>
+
+        <div class="toolbar card-surface">
+          <div class="toolbar__row">
+            <label class="search">
+              <svg class="search__icon" width="18" height="18" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="28" cy="28" r="16"/><path d="M40 40 L54 54"/></svg>
+              <input type="search" id="memo-search" class="search__input" placeholder="メモを検索" autocomplete="off" aria-label="メモを検索">
+            </label>
+            <button type="button" id="btn-memo-new" class="btn btn--primary toolbar__new"><svg width="16" height="16" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" aria-hidden="true"><path d="M32 12 V52"/><path d="M12 32 H52"/></svg><span>新しいメモ</span></button>
+          </div>
+          <div class="memo-filter-bar" id="memo-filter-bar">
+            <div class="chip-row memo-filter-bar__chips" id="memo-filter" role="group" aria-label="カテゴリーで絞り込み"></div>
+            <select id="memo-project-filter" class="select memo-filter-bar__project" aria-label="案件で絞り込み"></select>
+          </div>
+        </div>
+
+        <div id="memo-loading" class="empty-state">読み込み中…</div>
+        <ul id="memo-list" class="memo-list"></ul>
+
+        <div id="memo-empty-first" class="empty-state card-surface hidden">
+          <p class="empty-state__title">まだメモがありません</p>
+          <p>打ち合わせで決まったこと、修正依頼、作業ログなどを<br>案件と紐付けて残しておけます。</p>
+          <div class="empty-state__actions">
+            <button type="button" id="btn-memo-empty-new" class="btn btn--primary">最初のメモを書く</button>
+          </div>
+        </div>
+        <div id="memo-empty-match" class="empty-state card-surface hidden">
+          <p>条件に合うメモがありません。</p>
+          <div class="empty-state__actions">
+            <button type="button" id="btn-memo-clear" class="btn btn--ghost btn--sm">絞り込みを解除する</button>
           </div>
         </div>
       </section>
@@ -462,6 +503,52 @@
         <div class="modal__actions-right">
           <button type="button" class="btn btn--ghost" data-close>キャンセル</button>
           <button type="submit" id="btn-snippet-save" class="btn btn--primary">保存する</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- メモ編集モーダル -->
+  <div id="memo-overlay" class="dialog-overlay">
+    <form id="memo-form" class="modal modal--wide" novalidate>
+      <div class="modal__head">
+        <div class="modal__title" id="memo-modal-title">新しいメモ</div>
+        <button type="button" class="modal__close" data-close aria-label="閉じる">&times;</button>
+      </div>
+      <div class="field field--compact">
+        <label class="field__label" for="input-memo-title">タイトル<span class="field__hint">任意・空なら1行目を使います</span></label>
+        <input type="text" id="input-memo-title" maxlength="80" placeholder="例：10/12 打ち合わせ" autocomplete="off">
+      </div>
+      <div class="field field--compact">
+        <label class="field__label" for="input-memo-body">本文</label>
+        <div class="memo-templates" id="memo-templates" role="group" aria-label="ひな形を挿入"></div>
+        <textarea id="input-memo-body" class="memo-input" rows="10" maxlength="10000" placeholder="ここにメモを書く（URLは一覧でそのままリンクになります）"></textarea>
+        <p class="field__count" id="memo-body-count">0 / 10000</p>
+      </div>
+      <div class="field-row">
+      <div class="field field--compact">
+        <label class="field__label" for="input-memo-category">カテゴリー</label>
+        <input type="text" id="input-memo-category" maxlength="20" list="memo-category-list" placeholder="例：打ち合わせ" autocomplete="off">
+        <datalist id="memo-category-list"></datalist>
+        <div class="memo-category-chips" id="memo-category-chips" role="group" aria-label="カテゴリーの候補"></div>
+      </div>
+      <div class="field field--compact">
+        <label class="field__label" for="input-memo-project">案件</label>
+        <select id="input-memo-project" class="select"></select>
+      </div>
+      </div>
+      <label class="check">
+        <input type="checkbox" id="input-memo-pinned">
+        <span>ピン留めして、いつも上に表示する</span>
+      </label>
+      <p class="modal__note">パスワードやFTPの接続情報などは保存しないでください。<span class="memo-shortcut">Ctrl / ⌘ + Enter で保存</span></p>
+      <div class="modal__actions modal__actions--split">
+        <div class="modal__actions-left">
+          <button type="button" id="btn-memo-delete" class="btn btn--ghost is-danger hidden">削除</button>
+        </div>
+        <div class="modal__actions-right">
+          <button type="button" class="btn btn--ghost" data-close>キャンセル</button>
+          <button type="submit" id="btn-memo-save" class="btn btn--primary">保存する</button>
         </div>
       </div>
     </form>

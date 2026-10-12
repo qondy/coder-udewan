@@ -1076,6 +1076,189 @@
   margin-top: $spacing-lg;
 }
 
+// ===== Memos =====
+.memo-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-top: $spacing-sm;
+
+  &__chips {
+    flex: 1;
+    min-width: 0;
+    margin-top: 0;
+  }
+
+  &__project {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 180px;
+    padding: 6px 10px;
+    font-size: $font-size-sm;
+  }
+
+  @media (max-width: $bp-mobile) {
+    flex-direction: column;
+    align-items: stretch;
+
+    &__project {
+      max-width: none;
+    }
+  }
+}
+
+.chip--sm {
+  padding: 3px 10px;
+  font-size: $font-size-xs;
+}
+
+.memo-list {
+  display: grid;
+  gap: $spacing-md;
+
+  @media (min-width: $bp-tablet) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.memo-card {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  min-width: 0;
+  padding: $spacing-md;
+
+  &.is-pinned {
+    box-shadow: inset 0 3px 0 $color-primary, 0 2px 12px rgba($color-primary, 0.06);
+  }
+
+  &__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $spacing-sm;
+  }
+
+  &__title {
+    min-width: 0;
+    font-size: $font-size-base;
+    font-weight: 700;
+    line-height: 1.5;
+    text-align: left;
+    color: $color-text;
+    word-break: break-word;
+
+    &:hover {
+      color: $color-primary-ink;
+    }
+  }
+
+  &__pin {
+    flex-shrink: 0;
+    padding: 2px 8px;
+    font-size: $font-size-xs;
+    font-weight: 700;
+    color: $color-text-muted;
+    border: 1px solid $color-border;
+    border-radius: 999px;
+
+    &.is-active {
+      color: #fff;
+      background: $color-primary;
+      border-color: $color-primary;
+    }
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  &__category,
+  &__project {
+    padding: 2px 10px;
+    font-size: $font-size-xs;
+    font-weight: 700;
+    border-radius: 999px;
+  }
+
+  &__category {
+    color: $color-primary-ink;
+    background: rgba($color-primary, 0.12);
+
+    &:hover {
+      background: rgba($color-primary, 0.2);
+    }
+  }
+
+  &__project {
+    color: $color-text-muted;
+    background: $color-surface-2;
+  }
+
+  &__body {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: $font-size-sm;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+
+    a {
+      color: $color-primary-ink;
+      word-break: break-all;
+    }
+  }
+
+  &__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-sm;
+    margin-top: auto;
+  }
+
+  &__date {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 6px;
+  }
+}
+
+.memo-templates,
+.memo-category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.memo-templates {
+  margin-bottom: $spacing-sm;
+}
+
+.memo-category-chips {
+  margin-top: 6px;
+}
+
+.memo-input {
+  min-height: 200px;
+}
+
+.memo-shortcut {
+  margin-left: $spacing-sm;
+
+  @media (hover: none) {
+    display: none;
+  }
+}
+
 // ===== Empty states =====
 .empty-state {
   &__title {

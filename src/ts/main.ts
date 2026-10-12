@@ -2,6 +2,7 @@ import { loginWithGoogle, logout, onAuthChange } from './auth';
 import { cancelConfirm, initConfirmDialog, isConfirmOpen } from './dialog';
 import { submitFeedback } from './feedback';
 import { initCheckTab, setCheckUser } from './tab-check';
+import { canCloseMemoEditor, initMemoTab, setMemoUser, showProjectMemos } from './tab-memo';
 import { initPromptTab, setPromptUser } from './tab-prompt';
 import { initRulesTab } from './tab-rules';
 import { canCloseSnippetEditor, initSnippetTab, setSnippetUser } from './tab-snippet';
@@ -9,7 +10,7 @@ import { TabKey } from './types';
 import { closeOverlay, openOverlay, showToast } from './ui';
 
 const TAB_KEY = 'coder-udewan:tab';
-const TABS: TabKey[] = ['prompt', 'rules', 'snippet', 'check'];
+const TABS: TabKey[] = ['prompt', 'rules', 'snippet', 'check', 'memo'];
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
 
@@ -57,6 +58,7 @@ function initTabs(): void {
 // ============================================================
 async function requestClose(overlay: HTMLElement): Promise<void> {
   if (overlay.id === 'snippet-overlay' && !(await canCloseSnippetEditor())) return;
+  if (overlay.id === 'memo-overlay' && !(await canCloseMemoEditor())) return;
   closeOverlay(overlay);
 }
 
@@ -160,6 +162,7 @@ function initAuth(): void {
     setPromptUser(uid);
     setSnippetUser(uid);
     setCheckUser(uid);
+    setMemoUser(uid);
   });
 }
 
@@ -170,5 +173,12 @@ initPromptTab();
 initRulesTab();
 initSnippetTab();
 initCheckTab();
+initMemoTab();
+document.addEventListener('app:open-memos', (e) => {
+  const { projectId } = (e as CustomEvent<{ projectId: string }>).detail;
+  showProjectMemos(projectId);
+  switchTab('memo');
+  window.scrollTo({ top: 0 });
+});
 initFeedback();
 initAuth();

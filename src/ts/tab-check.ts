@@ -24,6 +24,18 @@ let hideDone = false;
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
 
+// メモタブなど、案件の一覧を使うほかの画面への通知
+const projectListeners: ((list: Project[]) => void)[] = [];
+
+export function onProjectsChange(cb: (list: Project[]) => void): void {
+  projectListeners.push(cb);
+  cb(projects);
+}
+
+function notifyProjects(): void {
+  projectListeners.forEach((cb) => cb(projects));
+}
+
 function current(): Project | undefined {
   return projects.find((p) => p.id === currentId);
 }
@@ -328,6 +340,10 @@ export function initCheckTab(): void {
     }
     render();
   });
+  $('btn-project-memos').addEventListener('click', () => {
+    if (!currentId) return;
+    document.dispatchEvent(new CustomEvent('app:open-memos', { detail: { projectId: currentId } }));
+  });
   $('btn-copy-unchecked').addEventListener('click', async () => {
     const p = current();
     if (!p) return;
@@ -379,11 +395,13 @@ export function setCheckUser(nextUid: string | null): void {
   projects = [];
   loaded = false;
   currentId = null;
+  notifyProjects();
   render();
   if (!nextUid) return;
   unsub = subscribeProjects(nextUid, (list) => {
     projects = list;
     loaded = true;
+    notifyProjects();
     render();
   }, () => {
     loaded = true;
