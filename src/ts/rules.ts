@@ -1,9 +1,10 @@
 // coding-template/CLAUDE.md（デザインカンプ→FTP納品タイプの案件ルール）をもとにした定型文
 
-/** 指示文に「参照だけ」入れる場合のルール文 */
-export const RULES_REF = [
-  'coding-template/CLAUDE.md のコーディングルールに従ってください。',
-  '（セマンティック+BEM / SCSS / TypeScript / npm run build で dist/ に出力し、FTPで納品）',
+/** 指示文に入れるデフォルトのルール */
+export const RULES_BASIC = [
+  'セマンティック+BEM',
+  'SCSS、TS',
+  'npm run build→dist→FTP等',
 ];
 
 /** 指示文にルールを全文で入れる場合（CLAUDE.md がない環境や、他のAIに渡す場合） */

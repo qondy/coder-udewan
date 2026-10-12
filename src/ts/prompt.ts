@@ -1,5 +1,5 @@
 import { AdjustItem, PromptForm, PromptKind } from './types';
-import { DELIVERY_CHECKLIST, RULES_FULL, RULES_REF } from './rules';
+import { DELIVERY_CHECKLIST, RULES_BASIC, RULES_FULL } from './rules';
 
 export const MAX_SHORT = 80;
 export const MAX_LONG = 2000;
@@ -19,7 +19,7 @@ export function emptyAdjustItem(): AdjustItem {
 export function defaultForm(): PromptForm {
   return {
     kind: 'new',
-    ruleMode: 'ref',
+    ruleMode: 'basic',
     project: '',
     page: '',
     hasPc: true,
@@ -58,7 +58,7 @@ export function normalizeForm(raw: unknown): PromptForm {
     : [];
   return {
     kind: oneOf(r.kind, ['new', 'adjust', 'feature', 'review'] as const, d.kind),
-    ruleMode: oneOf(r.ruleMode, ['ref', 'full'] as const, d.ruleMode),
+    ruleMode: oneOf(r.ruleMode, ['basic', 'full'] as const, d.ruleMode),
     project: str(r.project, MAX_SHORT),
     page: str(r.page, MAX_SHORT),
     hasPc: typeof r.hasPc === 'boolean' ? r.hasPc : d.hasPc,
@@ -97,7 +97,7 @@ function pageLine(f: PromptForm): string {
 }
 
 function rulesBlock(f: PromptForm): string[] {
-  if (f.ruleMode === 'ref') return ['## ルール', ...RULES_REF];
+  if (f.ruleMode === 'basic') return ['## ルール', ...RULES_BASIC.map((r) => `- ${r}`)];
   return ['## コーディングルール', ...RULES_FULL.map((r) => `- ${r}`)];
 }
 

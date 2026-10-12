@@ -2,7 +2,7 @@
 // 指示プロンプト
 // ============================================================
 export type PromptKind = 'new' | 'adjust' | 'feature' | 'review';
-export type RuleMode = 'ref' | 'full';
+export type RuleMode = 'basic' | 'full';
 export type Device = 'both' | 'pc' | 'sp';
 
 export interface AdjustItem {
