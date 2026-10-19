@@ -29,6 +29,8 @@ export interface PromptForm {
   // 調整依頼
   device: Device;
   adjustItems: AdjustItem[];
+  // 新規コーディング・機能追加で実装する機能（FEATURES の id）
+  features: string[];
   // 機能追加
   featureName: string;
   featureTarget: string;

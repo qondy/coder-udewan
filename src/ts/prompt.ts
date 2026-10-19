@@ -1,4 +1,5 @@
 import { AdjustItem, PromptForm, PromptKind } from './types';
+import { FEATURE_IDS, FEATURES } from './features';
 import { DELIVERY_CHECKLIST, RULES_BASIC, RULES_FULL } from './rules';
 
 export const MAX_SHORT = 80;
@@ -33,6 +34,7 @@ export function defaultForm(): PromptForm {
     motion: '',
     device: 'both',
     adjustItems: [emptyAdjustItem()],
+    features: [],
     featureName: '',
     featureTarget: '',
     featureDesc: '',
@@ -72,6 +74,9 @@ export function normalizeForm(raw: unknown): PromptForm {
     motion: str(r.motion, MAX_LONG),
     device: oneOf(r.device, ['both', 'pc', 'sp'] as const, d.device),
     adjustItems: items.length ? items : [emptyAdjustItem()],
+    features: Array.isArray(r.features)
+      ? FEATURE_IDS.filter((id) => (r.features as unknown[]).includes(id))
+      : [],
     featureName: str(r.featureName, MAX_SHORT),
     featureTarget: str(r.featureTarget, MAX_SHORT),
     featureDesc: str(r.featureDesc, MAX_LONG),
@@ -112,6 +117,13 @@ function labeled(label: string, text: string, prefix: string): string {
   return t.includes('\n') ? `${label}\n${indent(t, prefix)}` : `${label}${t}`;
 }
 
+/** チェックした機能を、実装時の注意点つきで並べる */
+function featuresBlock(f: PromptForm, title: string): string[] {
+  const picked = FEATURES.filter((x) => f.features.includes(x.id));
+  if (!picked.length) return [];
+  return ['', title, ...picked.map((x) => `- ${x.label}：${x.spec}`)];
+}
+
 function buildNew(f: PromptForm): string[] {
   const images = [f.hasPc ? 'PC版' : '', f.hasSp ? 'SP版' : ''].filter(Boolean).join('・') || '（未選択）';
   const lines = [
@@ -131,6 +143,7 @@ function buildNew(f: PromptForm): string[] {
   lines.push(f.siteType === 'static'
     ? '- サイト形態：静的HTML一式（dist/ をFTPでアップロード）'
     : '- サイト形態：のちに WordPress テーマ化する予定（テンプレート化しやすい構造にする）');
+  lines.push(...featuresBlock(f, '## 実装する機能'));
   if (f.motion.trim()) lines.push('', '## 動き・インタラクション', f.motion.trim());
   lines.push(
     '',
@@ -176,13 +189,13 @@ function buildFeature(f: PromptForm): string[] {
   const lines = ['ページに以下の機能（動き）を追加してください。', '', '## 対象'];
   if (f.project.trim()) lines.push(`- 案件名：${f.project.trim()}`);
   lines.push(pageLine(f));
-  lines.push(
-    '',
-    '## 機能',
-    `- 機能名：${or(f.featureName, '（未記入）')}`,
-    `- 対象の要素：${or(f.featureTarget, '（未記入）')}`,
-  );
-  if (f.featureDesc.trim()) lines.push(labeled('- 動作：', f.featureDesc, '  '));
+  lines.push(...featuresBlock(f, '## 追加する機能'));
+  const hasCustom = Boolean(f.featureName.trim() || f.featureTarget.trim() || f.featureDesc.trim());
+  if (hasCustom || !f.features.length) {
+    lines.push('', f.features.length ? '## そのほかの機能' : '## 機能', `- 機能名：${or(f.featureName, '（未記入）')}`);
+    if (f.featureTarget.trim() || !f.features.length) lines.push(`- 対象の要素：${or(f.featureTarget, '（未記入）')}`);
+    if (f.featureDesc.trim()) lines.push(labeled('- 動作：', f.featureDesc, '  '));
+  }
   lines.push(
     '',
     ...rulesBlock(f),

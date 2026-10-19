@@ -154,6 +154,15 @@
               </div>
             </div>
 
+            <!-- 実装する機能（新規コーディング・機能の追加で共通） -->
+            <div class="kind-section" data-kind="new feature">
+              <fieldset class="field">
+                <legend class="field__label">実装する機能<span class="field__hint" id="feature-count">複数選べます</span></legend>
+                <div class="feature-picker" id="feature-picker"></div>
+                <button type="button" id="btn-features-clear" class="link-btn link-btn--muted feature-picker__clear hidden">選択をすべて解除</button>
+              </fieldset>
+            </div>
+
             <!-- 調整依頼 -->
             <div class="kind-section" data-kind="adjust">
               <fieldset class="field">
@@ -175,7 +184,7 @@
             <div class="kind-section" data-kind="feature">
               <div class="field-row">
                 <div class="field">
-                  <label class="field__label" for="f-feature-name">機能名</label>
+                  <label class="field__label" for="f-feature-name">そのほかの機能名<span class="field__hint">任意</span></label>
                   <input type="text" id="f-feature-name" name="featureName" maxlength="80" placeholder="例：FAQのアコーディオン" autocomplete="off">
                 </div>
                 <div class="field">

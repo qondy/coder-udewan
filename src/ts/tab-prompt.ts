@@ -3,6 +3,7 @@ import { confirmDialog } from './dialog';
 import {
   buildPrompt, defaultForm, emptyAdjustItem, KIND_LABELS, MAX_ADJUST_ITEMS, normalizeForm,
 } from './prompt';
+import { FEATURES } from './features';
 import { createPreset, deletePreset, MAX_PRESETS, subscribePresets } from './store';
 import { AdjustItem, Preset, PromptForm } from './types';
 import { button, closeOverlay, openOverlay, showToast, textEl } from './ui';
@@ -41,7 +42,7 @@ function saveDraft(): void {
 // ============================================================
 // フォーム ⇄ state
 // ============================================================
-type FieldKey = Exclude<keyof PromptForm, 'adjustItems'>;
+type FieldKey = Exclude<keyof PromptForm, 'adjustItems' | 'features'>;
 
 function formEl(): HTMLFormElement {
   return $('prompt-form');
@@ -51,8 +52,13 @@ function formEl(): HTMLFormElement {
 function readForm(): void {
   const el = formEl();
   const next: Record<string, unknown> = { ...form };
+  const features: string[] = [];
   Array.from(el.elements).forEach((node) => {
     if (!(node instanceof HTMLInputElement || node instanceof HTMLTextAreaElement)) return;
+    if (node.name === 'features') {
+      if ((node as HTMLInputElement).checked) features.push(node.value);
+      return;
+    }
     const name = node.name as FieldKey;
     if (!name || node.closest('#adjust-list')) return;
     if (node instanceof HTMLInputElement && node.type === 'checkbox') next[name] = node.checked;
@@ -60,7 +66,7 @@ function readForm(): void {
       if (node.checked) next[name] = node.value;
     } else next[name] = node.value;
   });
-  form = normalizeForm({ ...next, adjustItems: form.adjustItems });
+  form = normalizeForm({ ...next, features, adjustItems: form.adjustItems });
 }
 
 function writeForm(): void {
@@ -69,6 +75,10 @@ function writeForm(): void {
   Array.from(el.elements).forEach((node) => {
     if (!(node instanceof HTMLInputElement || node instanceof HTMLTextAreaElement)) return;
     const name = node.name;
+    if (name === 'features' && node instanceof HTMLInputElement) {
+      node.checked = form.features.includes(node.value);
+      return;
+    }
     if (!name || node.closest('#adjust-list') || !(name in values)) return;
     const v = values[name];
     if (node instanceof HTMLInputElement && node.type === 'checkbox') node.checked = v === true;
@@ -80,8 +90,31 @@ function writeForm(): void {
 
 function renderKindSections(): void {
   document.querySelectorAll<HTMLElement>('.kind-section').forEach((sec) => {
-    sec.classList.toggle('hidden', sec.dataset.kind !== form.kind);
+    sec.classList.toggle('hidden', !(sec.dataset.kind ?? '').split(' ').includes(form.kind));
   });
+}
+
+/** 機能のチェックボックスを並べる（一覧は features.ts で一元管理） */
+function renderFeaturePicker(): void {
+  const wrap = $('feature-picker');
+  wrap.replaceChildren();
+  FEATURES.forEach((f) => {
+    const label = document.createElement('label');
+    label.className = 'feature-picker__item';
+    label.title = f.spec;
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.name = 'features';
+    input.value = f.id;
+    label.append(input, textEl('span', 'feature-picker__name', f.label));
+    wrap.appendChild(label);
+  });
+}
+
+function renderFeatureCount(): void {
+  const n = form.features.length;
+  $('feature-count').textContent = n ? `${n}個を選択中` : '複数選べます';
+  $('btn-features-clear').classList.toggle('hidden', n === 0);
 }
 
 function renderPreview(): void {
@@ -92,6 +125,7 @@ function renderPreview(): void {
 
 function refresh(): void {
   renderKindSections();
+  renderFeatureCount();
   renderPreview();
   saveDraft();
 }
@@ -226,6 +260,7 @@ async function submitPreset(e: Event): Promise<void> {
 // 初期化
 // ============================================================
 export function initPromptTab(): void {
+  renderFeaturePicker();
   form = loadDraft();
   writeForm();
   refresh();
@@ -256,6 +291,12 @@ export function initPromptTab(): void {
     refresh();
     const items = document.querySelectorAll<HTMLInputElement>('#adjust-list .adjust-list__item:last-child input');
     if (items[0]) items[0].focus();
+  });
+
+  $('btn-features-clear').addEventListener('click', () => {
+    form.features = [];
+    writeForm();
+    refresh();
   });
 
   $('btn-prompt-copy').addEventListener('click', async () => {

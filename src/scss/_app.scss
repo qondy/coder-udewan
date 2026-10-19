@@ -420,6 +420,53 @@
   }
 }
 
+.feature-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 6px;
+
+  @media (max-width: $bp-mobile) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 8px 10px;
+    font-size: $font-size-sm;
+    line-height: 1.4;
+    background: $color-surface;
+    border: 1.5px solid $color-border;
+    border-radius: $radius-md;
+    cursor: pointer;
+
+    input {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: $color-primary;
+    }
+
+    &:has(input:checked) {
+      background: rgba($color-primary, 0.08);
+      border-color: $color-primary;
+    }
+  }
+
+  &__name {
+    min-width: 0;
+    font-weight: 600;
+    word-break: break-word;
+  }
+
+  &__clear {
+    margin-top: $spacing-sm;
+  }
+}
+
 .adjust-list {
   display: grid;
   gap: $spacing-sm;
