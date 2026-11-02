@@ -8,6 +8,9 @@ import { initRulesTab } from './tab-rules';
 import { canCloseSnippetEditor, initSnippetTab, setSnippetUser } from './tab-snippet';
 import { TabKey } from './types';
 import { closeOverlay, openOverlay, showToast } from './ui';
+import { initClickTracking } from './analytics';
+
+initClickTracking();
 
 const TAB_KEY = 'coder-udewan:tab';
 const TABS: TabKey[] = ['prompt', 'rules', 'snippet', 'check', 'memo'];
